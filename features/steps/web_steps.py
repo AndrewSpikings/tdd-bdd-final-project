@@ -104,13 +104,12 @@ def step_impl(context, element_name):
 # to get the element id of any button
 ##################################################################
 
-#
-@when(u'I press the "{button}" button')
+@when('I press the "{button}" button')
 def step_impl(context, button):
     """
         Button action (Create, Clear, Retrieve, Search, Update, Delete)
     """
-    button_id = button + "-btn"
+    button_id = button.lower() + "-btn"
     button = context.driver.find_element_by_id(button_id)
     button.click()
  
@@ -125,9 +124,7 @@ def step_impl(context, name):
 @then('I should not see "{name}" in the results')
 def step_impl(context, name):
     """"Check the results to not find element"""
-    element = WebDriverWait(context.driver, context.wait_seconds).until(
-        expected_conditions.find_element_by_id((By.ID, 'search_results'))
-    )
+    element = context.driver.find_element_by_id('search_results')
     assert(name not in element.text)
     
 @then('I should see the message "{message}"')
