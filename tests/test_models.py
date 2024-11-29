@@ -229,10 +229,14 @@ class TestProductModel(unittest.TestCase):
         self.assertEqual(foundItems.count(), 1)
         self.assertEqual(foundItems[0].price, product.price)
 
-# def test_deserialise(self):
-#    """It should deserialize the product"""       
-#        products = ProductFactory.create_batch(10)
-#        prod_json = products.get_json()
-#        product = Product()
-#        product.deserialize(prod_json)       
-        
+    def test_deserialise(self):
+        """It should deserialize the product"""
+        products = ProductFactory.create_batch(10)
+        for product in products:
+            test_product = ProductFactory()
+            product.create()
+            return_record = test_product.deserialize(product.serialize())
+            self.assertEqual(product.name, return_record.name)
+            self.assertEqual(product.description, return_record.description)
+            self.assertEqual(product.price, return_record.price)
+            self.assertEqual(product.category, return_record.category)
